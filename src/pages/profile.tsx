@@ -1,18 +1,15 @@
-import { gql } from '@apollo/client/core';
-import { graphqlClient as apolloClient } from '@/services/apolloClient';
-import { login } from '@/lib/authentication/login';
-import { argsBespokeInit } from '@/utils/config';
-import { getAddressFromSigner } from '@/services/etherService';
-import { prettyJSON } from '@/utils/helpers';
-import { createProfile } from '@/lib/profile/create-profile';
-import NewProfileModal from '@/components/Profile/NewProfileModal';
 import { useEffect, useState } from 'react';
 
-// import { useEthers, useBlockMeta, useBlockNumber } from '@usedappify/core';
+import { gql } from '@apollo/client/core';
 
 import { Dashboard } from '@/layouts/Dashboard';
 import { Meta } from '@/layouts/Meta';
+import { login } from '@/lib/authentication/login';
+import { graphqlClient as apolloClient } from '@/services/apolloClient';
+import { getAddressFromSigner } from '@/services/etherService';
+import { prettyJSON } from '@/utils/helpers';
 
+// import { useEthers, useBlockMeta, useBlockNumber } from '@usedappify/core';
 
 const GET_PROFILES = `
   query($request: ProfileQueryRequest!) {
@@ -112,14 +109,9 @@ const getProfilesRequest = (request: ProfilesRequest) => {
 };
 
 export const profiles = async (request?: ProfilesRequest) => {
-  const address = await getAddressFromSigner();
-  console.log('profiles: address', address);
-  
-  await login(address);
-
-  if (!request) {
-    request = { ownedBy: address };
-  }
+  // if (!request) {
+  //  request = { ownedBy: address };
+  // }
 
   // only showing one example to query but you can see from request
   // above you can query many
@@ -128,8 +120,6 @@ export const profiles = async (request?: ProfilesRequest) => {
   prettyJSON('profiles: result', profilesFromProfileIds.data);
 
   return profilesFromProfileIds.data;
-
-
 };
 
 const Profile = () => {
@@ -146,19 +136,22 @@ const Profile = () => {
   const [userprofiles, setUserProfiles] = useState<any>();
   useEffect(() => {
     const fetchData = async () => {
-      //if (argsBespokeInit()) {
-        const currentProfiles = await profiles();
-        if (!currentProfiles?.profiles?.items[0]) {
-          await createProfile()
-        }
-          setUserProfiles(currentProfiles);
-      //}
+      // if (argsBespokeInit()) {
+      const address = await getAddressFromSigner();
+      console.log('profiles: address', address);
+      await login(address);
+      const currentProfiles = await profiles({ ownedBy: address });
+      if (!currentProfiles?.profiles?.items[0]) {
+        // await createProfile()
+      }
+      setUserProfiles(currentProfiles);
+      // }
     };
     fetchData();
   }, [userprofiles]);
 
   const userProfile = userprofiles?.profiles?.items[0];
-  console.log('userProfile', userProfile);
+  console.log('userProfiles', userprofiles?.profiles?.items);
 
   return (
     <Dashboard
@@ -177,10 +170,12 @@ const Profile = () => {
             <div>
               <div className="overflow-hidden relative p-1 m-0.5 mr-2 w-56 h-56  bg-gradient-to-tr from-yellow-600 to-pink-600 rounded-full uk-transition-toggle">
                 <img
-                  src={'https://cloudflare-ipfs.com/ipfs/bafkreie5bpan2yermeshki66lrkq737hul3ck45zg5mzteqt4pq54bfn2m'}
+                  src={
+                    'https://cloudflare-ipfs.com/ipfs/bafkreie5bpan2yermeshki66lrkq737hul3ck45zg5mzteqt4pq54bfn2m'
+                  }
                   className="w-full h-full bg-gray-200 rounded-full border-4 border-white dark:border-gray-900"
                 />
-                {/*userProfile?.picture?.original?.url*/}
+                {/* userProfile?.picture?.original?.url */}
                 <div className="flex absolute -bottom-3 justify-center pt-4 pb-7 space-x-3 w-full text-2xl text-white custom-overly1 uk-transition-slide-bottom-medium">
                   <a href="#" className="hover:text-white">
                     <i className="uil-camera" />
@@ -201,8 +196,7 @@ const Profile = () => {
                 {userProfile?.bio}
               </p>
               <div className="flex mb-3 space-x-2 font-semibold  dark:text-gray-10">
-                <a href="#">Husky</a> ,{' '}
-                <a href="#">Samoieda</a> ,{' '}
+                <a href="#">Husky</a> , <a href="#">Samoieda</a> ,{' '}
                 <a href="#">Boxer</a>
               </div>
               <div className="flex my-2 space-x-3 text-sm font-semibold text-center capitalize">
@@ -274,18 +268,21 @@ const Profile = () => {
                   </div>
                 </div>
               </div>
-              <div className="grid grid-cols-3 mt-3 w-full text-center dark:text-gray-100 divide-x divide-gray-300 divide-transparent lg:text-lg lg:text-left">
+              <div className="grid grid-cols-3 mt-3 w-full text-center dark:text-gray-100 divide-x divide-gray-300 lg:text-lg lg:text-left">
                 <div className="flex flex-col lg:flex-row">
                   {' '}
-                  {userProfile?.stats?.totalPosts || '0'} <strong className="lg:pl-2">Posts</strong>
+                  {userProfile?.stats?.totalPosts || '0'}{' '}
+                  <strong className="lg:pl-2">Posts</strong>
                 </div>
                 <div className="flex flex-col lg:flex-row lg:pl-4">
                   {' '}
-                  {userProfile?.stats?.totalFollowers || '0'} <strong className="lg:pl-2">Followers</strong>
+                  {userProfile?.stats?.totalFollowers || '0'}{' '}
+                  <strong className="lg:pl-2">Followers</strong>
                 </div>
                 <div className="flex flex-col lg:flex-row lg:pl-4">
                   {' '}
-                  {userProfile?.stats?.totalFollowing || '0'} <strong className="lg:pl-2">Following</strong>
+                  {userProfile?.stats?.totalFollowing || '0'}{' '}
+                  <strong className="lg:pl-2">Following</strong>
                 </div>
               </div>
             </div>
@@ -665,7 +662,6 @@ const Profile = () => {
           </div>
         </div>
       </div>
-      
     </Dashboard>
   );
 };

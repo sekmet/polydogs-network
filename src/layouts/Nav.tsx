@@ -53,8 +53,6 @@ export default function Nav() {
     },
   ];
 
-  console.log(token);
-
   const onOpen = () => console.log('onOpen disclosure');
   return (
     <Disclosure as="nav" className="bg-gray-800">
