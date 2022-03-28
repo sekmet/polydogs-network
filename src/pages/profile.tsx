@@ -4,7 +4,7 @@ import { login } from '@/lib/authentication/login';
 import { argsBespokeInit } from '@/utils/config';
 import { getAddressFromSigner } from '@/services/etherService';
 import { prettyJSON } from '@/utils/helpers';
-
+import NewProfileModal from '@/components/Profile/NewProfileModal';
 import { useEffect, useState } from 'react';
 
 // import { useEthers, useBlockMeta, useBlockNumber } from '@usedappify/core';
@@ -111,9 +111,9 @@ const getProfilesRequest = (request: ProfilesRequest) => {
 };
 
 export const profiles = async (request?: ProfilesRequest) => {
-  const address = getAddressFromSigner();
+  const address = await getAddressFromSigner();
   console.log('profiles: address', address);
-
+  
   await login(address);
 
   if (!request) {
@@ -127,6 +127,8 @@ export const profiles = async (request?: ProfilesRequest) => {
   prettyJSON('profiles: result', profilesFromProfileIds.data);
 
   return profilesFromProfileIds.data;
+
+
 };
 
 const Profile = () => {
@@ -145,11 +147,14 @@ const Profile = () => {
     const fetchData = async () => {
       //if (argsBespokeInit()) {
         const currentProfiles = await profiles();
-        setUserProfiles(currentProfiles);
+        if (currentProfiles) {
+          setUserProfiles(currentProfiles);
+        }
+
       //}
     };
     fetchData();
-  }, [userprofiles]);
+  }, []);
 
   const userProfile = userprofiles?.profiles?.items[0];
 
@@ -175,10 +180,10 @@ const Profile = () => {
                 />
                 {/*userProfile?.picture?.original?.url*/}
                 <div className="flex absolute -bottom-3 justify-center pt-4 pb-7 space-x-3 w-full text-2xl text-white custom-overly1 uk-transition-slide-bottom-medium">
-                  <a href="profile.html#" className="hover:text-white">
+                  <a href="#" className="hover:text-white">
                     <i className="uil-camera" />
                   </a>
-                  <a href="profile.html#" className="hover:text-white">
+                  <a href="#" className="hover:text-white">
                     <i className="uil-crop-alt" />
                   </a>
                 </div>
@@ -194,20 +199,20 @@ const Profile = () => {
                 {userProfile?.bio}
               </p>
               <div className="flex mb-3 space-x-2 font-semibold  dark:text-gray-10">
-                <a href="profile.html#">Husky</a> ,{' '}
-                <a href="profile.html#">Samoieda</a> ,{' '}
-                <a href="profile.html#">Boxer</a>
+                <a href="#">Husky</a> ,{' '}
+                <a href="#">Samoieda</a> ,{' '}
+                <a href="#">Boxer</a>
               </div>
               <div className="flex my-2 space-x-3 text-sm font-semibold text-center capitalize">
                 <a
-                  href="profile.html#"
+                  href="#"
                   className="p-2 px-6 bg-gray-300 dark:bg-gray-700 rounded-md shadow-sm"
                 >
                   {' '}
                   Add friend
                 </a>
                 <a
-                  href="profile.html#"
+                  href="#"
                   className="p-2 px-6 text-white hover:text-white bg-pink-500 hover:bg-pink-600 rounded-md shadow-sm pink-500"
                 >
                   {' '}
@@ -215,7 +220,7 @@ const Profile = () => {
                 </a>
                 <div>
                   <a
-                    href="profile.html#"
+                    href="#"
                     className="flex justify-center items-center w-9 h-full text-xl bg-gray-300 dark:bg-gray-700 rounded-full"
                   >
                     <i className="icon-feather-chevron-down" />
@@ -227,7 +232,7 @@ const Profile = () => {
                     <ul className="space-y-1">
                       <li>
                         <a
-                          href="profile.html#"
+                          href="#"
                           className="flex items-center py-2 px-3 hover:text-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-md"
                         >
                           <i className="mr-2 uil-user-minus" />
@@ -236,7 +241,7 @@ const Profile = () => {
                       </li>
                       <li>
                         <a
-                          href="profile.html#"
+                          href="#"
                           className="flex items-center py-2 px-3 hover:text-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-md"
                         >
                           <i className="mr-2  uil-eye-slash" />
@@ -245,7 +250,7 @@ const Profile = () => {
                       </li>
                       <li>
                         <a
-                          href="profile.html#"
+                          href="#"
                           className="flex items-center py-2 px-3 hover:text-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-md"
                         >
                           <i className="mr-2 uil-share-alt" /> Share This
@@ -257,7 +262,7 @@ const Profile = () => {
                       </li>
                       <li>
                         <a
-                          href="profile.html#"
+                          href="#"
                           className="flex items-center py-2 px-3 text-red-500 hover:text-red-500 hover:bg-red-100 dark:hover:bg-red-600 rounded-md"
                         >
                           <i className="mr-2 uil-stop-circle" /> Block
@@ -289,34 +294,34 @@ const Profile = () => {
             Highligths{' '}
           </h1>
           <div className="grid grid-cols-3 gap-2 my-6 hover:text-yellow-700 lg:grid-cols-5 uk-link-reset">
-            <a href="profile.html#">
+            <a href="#">
               <div className="flex relative flex-col justify-center items-center w-full h-full bg-gray-100 rounded-2xl border-4 border-dashed">
                 <i className="text-4xl uil-plus-circle" />{' '}
                 <span> Add new </span>
               </div>
             </a>
-            <a href="profile.html#story-modal" uk-toggle="true">
+            <a href="#story-modal" uk-toggle="true">
               <img
                 src="/assets/images/avatars/avatar-lg-1.jpg"
                 alt="image polydogs"
                 className="object-cover w-full h-40 rounded-md lg:h-60"
               />
             </a>
-            <a href="profile.html#story-modal" uk-toggle="true">
+            <a href="#story-modal" uk-toggle="true">
               <img
                 src="/assets/images/post/img2.jpg"
                 alt="image polydogs"
                 className="object-cover w-full h-40 rounded-md lg:h-60"
               />
             </a>
-            <a href="profile.html#story-modal" uk-toggle="true">
+            <a href="#story-modal" uk-toggle="true">
               <img
                 src="/assets/images/post/img7.jpg"
                 alt="image polydogs"
                 className="object-cover w-full h-40 rounded-md lg:h-60 uk-visible@s"
               />
             </a>
-            <a href="profile.html#story-modal" uk-toggle="true">
+            <a href="#story-modal" uk-toggle="true">
               <img
                 src="/assets/images/post/img2.jpg"
                 alt="image polydogs"
@@ -330,7 +335,7 @@ const Profile = () => {
             </h1>
             <div className="flex bg-white dark:bg-gray-100 rounded-md border-2 border-gray-300 divide-x divide-gray-300 shadow-sm">
               <a
-                href="profile.html#"
+                href="#"
                 className="flex justify-center items-center w-10 h-10  bg-gray300"
                 data-tippy-placement="top"
                 title="Grid view"
@@ -339,7 +344,7 @@ const Profile = () => {
                 <i className="uil-apps" />
               </a>
               <a
-                href="profile.html#"
+                href="#"
                 className="flex justify-center items-center w-10 h-10"
                 data-tippy-placement="top"
                 title="List view"
@@ -361,7 +366,7 @@ const Profile = () => {
                 />
                 <div className="flex absolute bottom-0 justify-center items-center space-x-5 w-full h-full text-lg text-white bg-black bg-opacity-40 uk-transition-scale-up">
                   <a
-                    href="profile.html#story-modal"
+                    href="#story-modal"
                     uk-toggle="true"
                     className="flex items-center"
                   >
@@ -369,7 +374,7 @@ const Profile = () => {
                     <i className="mr-1 uil-heart" /> 150{' '}
                   </a>
                   <a
-                    href="profile.html#story-modal"
+                    href="#story-modal"
                     uk-toggle="true"
                     className="flex items-center"
                   >
@@ -377,7 +382,7 @@ const Profile = () => {
                     <i className="mr-1 uil-chat" /> 30{' '}
                   </a>
                   <a
-                    href="profile.html#story-modal"
+                    href="#story-modal"
                     uk-toggle="true"
                     className="flex items-center"
                   >
@@ -398,7 +403,7 @@ const Profile = () => {
                 />
                 <div className="flex absolute bottom-0 justify-center items-center space-x-5 w-full h-full text-lg text-white bg-black bg-opacity-40 uk-transition-scale-up">
                   <a
-                    href="profile.html#story-modal"
+                    href="#story-modal"
                     uk-toggle="true"
                     className="flex items-center"
                   >
@@ -406,7 +411,7 @@ const Profile = () => {
                     <i className="mr-1 uil-heart" /> 150{' '}
                   </a>
                   <a
-                    href="profile.html#story-modal"
+                    href="#story-modal"
                     uk-toggle="true"
                     className="flex items-center"
                   >
@@ -414,7 +419,7 @@ const Profile = () => {
                     <i className="mr-1 uil-chat" /> 30{' '}
                   </a>
                   <a
-                    href="profile.html#story-modal"
+                    href="#story-modal"
                     uk-toggle="true"
                     className="flex items-center"
                   >
@@ -435,7 +440,7 @@ const Profile = () => {
                 />
                 <div className="flex absolute bottom-0 justify-center items-center space-x-5 w-full h-full text-lg text-white bg-black bg-opacity-40 uk-transition-scale-up">
                   <a
-                    href="profile.html#story-modal"
+                    href="#story-modal"
                     uk-toggle="true"
                     className="flex items-center"
                   >
@@ -443,7 +448,7 @@ const Profile = () => {
                     <i className="mr-1 uil-heart" /> 150{' '}
                   </a>
                   <a
-                    href="profile.html#story-modal"
+                    href="#story-modal"
                     uk-toggle="true"
                     className="flex items-center"
                   >
@@ -451,7 +456,7 @@ const Profile = () => {
                     <i className="mr-1 uil-chat" /> 30{' '}
                   </a>
                   <a
-                    href="profile.html#story-modal"
+                    href="#story-modal"
                     uk-toggle="true"
                     className="flex items-center"
                   >
@@ -472,7 +477,7 @@ const Profile = () => {
                 />
                 <div className="flex absolute bottom-0 justify-center items-center space-x-5 w-full h-full text-lg text-white bg-black bg-opacity-40 uk-transition-scale-up">
                   <a
-                    href="profile.html#story-modal"
+                    href="#story-modal"
                     uk-toggle="true"
                     className="flex items-center"
                   >
@@ -480,7 +485,7 @@ const Profile = () => {
                     <i className="mr-1 uil-heart" /> 150{' '}
                   </a>
                   <a
-                    href="profile.html#story-modal"
+                    href="#story-modal"
                     uk-toggle="true"
                     className="flex items-center"
                   >
@@ -488,7 +493,7 @@ const Profile = () => {
                     <i className="mr-1 uil-chat" /> 30{' '}
                   </a>
                   <a
-                    href="profile.html#story-modal"
+                    href="#story-modal"
                     uk-toggle="true"
                     className="flex items-center"
                   >
@@ -509,7 +514,7 @@ const Profile = () => {
                 />
                 <div className="flex absolute bottom-0 justify-center items-center space-x-5 w-full h-full text-lg text-white bg-black bg-opacity-40 uk-transition-scale-up">
                   <a
-                    href="profile.html#story-modal"
+                    href="#story-modal"
                     uk-toggle="true"
                     className="flex items-center"
                   >
@@ -517,7 +522,7 @@ const Profile = () => {
                     <i className="mr-1 uil-heart" /> 150{' '}
                   </a>
                   <a
-                    href="profile.html#story-modal"
+                    href="#story-modal"
                     uk-toggle="true"
                     className="flex items-center"
                   >
@@ -525,7 +530,7 @@ const Profile = () => {
                     <i className="mr-1 uil-chat" /> 30{' '}
                   </a>
                   <a
-                    href="profile.html#story-modal"
+                    href="#story-modal"
                     uk-toggle="true"
                     className="flex items-center"
                   >
@@ -546,7 +551,7 @@ const Profile = () => {
                 />
                 <div className="flex absolute bottom-0 justify-center items-center space-x-5 w-full h-full text-lg text-white bg-black bg-opacity-40 uk-transition-scale-up">
                   <a
-                    href="profile.html#story-modal"
+                    href="#story-modal"
                     uk-toggle="true"
                     className="flex items-center"
                   >
@@ -554,7 +559,7 @@ const Profile = () => {
                     <i className="mr-1 uil-heart" /> 150{' '}
                   </a>
                   <a
-                    href="profile.html#story-modal"
+                    href="#story-modal"
                     uk-toggle="true"
                     className="flex items-center"
                   >
@@ -562,7 +567,7 @@ const Profile = () => {
                     <i className="mr-1 uil-chat" /> 30{' '}
                   </a>
                   <a
-                    href="profile.html#story-modal"
+                    href="#story-modal"
                     uk-toggle="true"
                     className="flex items-center"
                   >
@@ -583,7 +588,7 @@ const Profile = () => {
                 />
                 <div className="flex absolute bottom-0 justify-center items-center space-x-5 w-full h-full text-lg text-white bg-black bg-opacity-40 uk-transition-scale-up">
                   <a
-                    href="profile.html#story-modal"
+                    href="#story-modal"
                     uk-toggle="true"
                     className="flex items-center"
                   >
@@ -591,7 +596,7 @@ const Profile = () => {
                     <i className="mr-1 uil-heart" /> 150{' '}
                   </a>
                   <a
-                    href="profile.html#story-modal"
+                    href="#story-modal"
                     uk-toggle="true"
                     className="flex items-center"
                   >
@@ -599,7 +604,7 @@ const Profile = () => {
                     <i className="mr-1 uil-chat" /> 30{' '}
                   </a>
                   <a
-                    href="profile.html#story-modal"
+                    href="#story-modal"
                     uk-toggle="true"
                     className="flex items-center"
                   >
@@ -620,7 +625,7 @@ const Profile = () => {
                 />
                 <div className="flex absolute bottom-0 justify-center items-center space-x-5 w-full h-full text-lg text-white bg-black bg-opacity-40 uk-transition-scale-up">
                   <a
-                    href="profile.html#story-modal"
+                    href="#story-modal"
                     uk-toggle="true"
                     className="flex items-center"
                   >
@@ -628,7 +633,7 @@ const Profile = () => {
                     <i className="mr-1 uil-heart" /> 150{' '}
                   </a>
                   <a
-                    href="profile.html#story-modal"
+                    href="#story-modal"
                     uk-toggle="true"
                     className="flex items-center"
                   >
@@ -636,7 +641,7 @@ const Profile = () => {
                     <i className="mr-1 uil-chat" /> 30{' '}
                   </a>
                   <a
-                    href="profile.html#story-modal"
+                    href="#story-modal"
                     uk-toggle="true"
                     className="flex items-center"
                   >
@@ -649,7 +654,7 @@ const Profile = () => {
           </div>
           <div className="flex justify-center mt-6">
             <a
-              href="profile.html#"
+              href="#"
               className="py-2 px-6 my-3 font-semibold dark:text-white bg-white dark:bg-gray-800 rounded-full shadow-md"
             >
               {' '}
@@ -658,6 +663,7 @@ const Profile = () => {
           </div>
         </div>
       </div>
+      
     </Dashboard>
   );
 };
