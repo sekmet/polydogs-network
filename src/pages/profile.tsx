@@ -4,6 +4,7 @@ import { login } from '@/lib/authentication/login';
 import { argsBespokeInit } from '@/utils/config';
 import { getAddressFromSigner } from '@/services/etherService';
 import { prettyJSON } from '@/utils/helpers';
+import { createProfile } from '@/lib/profile/create-profile';
 import NewProfileModal from '@/components/Profile/NewProfileModal';
 import { useEffect, useState } from 'react';
 
@@ -147,16 +148,17 @@ const Profile = () => {
     const fetchData = async () => {
       //if (argsBespokeInit()) {
         const currentProfiles = await profiles();
-        if (currentProfiles) {
-          setUserProfiles(currentProfiles);
+        if (!currentProfiles?.profiles?.items[0]) {
+          await createProfile()
         }
-
+          setUserProfiles(currentProfiles);
       //}
     };
     fetchData();
-  }, []);
+  }, [userprofiles]);
 
   const userProfile = userprofiles?.profiles?.items[0];
+  console.log('userProfile', userProfile);
 
   return (
     <Dashboard

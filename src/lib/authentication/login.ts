@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client/core';
 import { graphqlClient as apolloClient } from '@/services/apolloClient';
-//import { argsBespokeInit } from '@/utils/config';
+import { argsBespokeInit } from '@/utils/config';
 import { getAddressFromSigner, signText } from '@/services/etherService';
 import { prettyJSON } from '@/utils/helpers';
 import { getAuthenticationToken, setAuthenticationToken } from '@/utils/state';
@@ -67,7 +67,7 @@ export const login = async () => {
 };
 
 (async () => {
-  //if (argsBespokeInit()) {
+  if (argsBespokeInit()) {
     await login();
-  //}
+  }
 })();

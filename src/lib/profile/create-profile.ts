@@ -34,7 +34,7 @@ const createProfileRequest = (createProfileRequest: {
 };
 
 export const createProfile = async () => {
-  const address = getAddressFromSigner();
+  const address = await getAddressFromSigner();
   console.log('create profile: address', address);
 
   await login(address);
@@ -72,6 +72,6 @@ export const createProfile = async () => {
   return result.data;
 };
 
-(async () => {
-  await createProfile();
-})();
+//(async () => {
+//  await createProfile();
+//})();

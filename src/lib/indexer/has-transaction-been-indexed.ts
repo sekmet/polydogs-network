@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client/core';
 import { graphqlClient as apolloClient } from '@/services/apolloClient';
 import { login } from '@/lib/authentication/login';
-//import { argsBespokeInit } from '../config';
+import { argsBespokeInit } from '@/utils/config';
 import { getAddressFromSigner } from '@/services/etherService';
 import { follow } from '@/lib/follow/follow';
 import { prettyJSON, sleep } from '@/utils/helpers';
@@ -143,7 +143,7 @@ const testTransaction = async () => {
 };
 
 (async () => {
-  //if (argsBespokeInit()) {
+  if (argsBespokeInit()) {
     await testTransaction();
-  //}
+  }
 })();

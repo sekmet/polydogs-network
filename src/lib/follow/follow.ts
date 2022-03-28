@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client/core';
 import { graphqlClient as apolloClient } from '@/services/apolloClient';
 import { login } from '@/lib/authentication/login';
-//import { argsBespokeInit } from '../config';
+import { argsBespokeInit } from '@/utils/config';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '@/services/etherService';
 import { lensHub } from '@/utils/lens-hub';
 
@@ -86,7 +86,7 @@ export const follow = async (profileId: string = '0x12') => {
 };
 
 (async () => {
-  //if (argsBespokeInit()) {
+  if (argsBespokeInit()) {
     await follow();
-  //}
+  }
 })();
